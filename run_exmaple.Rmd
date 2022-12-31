@@ -5,7 +5,7 @@ date: "2022/12/13"
 output: html_document
 ---
 ```{r}
-setwd("D:/ShareDisk/RenYu/cellpotency-main")  #Your work dirctory 
+setwd("YOUR_PATH/cellpotency-main")  #Your work dirctory 
 ```
 
 Install the packages used in this package. It may take many minits
