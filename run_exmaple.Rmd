@@ -1,0 +1,117 @@
+---
+title: "An exmaple of DPOR"
+author: "Yu Ren and Jianzhao Gao"
+date: "2022/12/13"
+output: html_document
+---
+```{r}
+setwd("D:/ShareDisk/RenYu/cellpotency-main")  #Your work dirctory 
+```
+
+Install the packages used in this package. It may take many minits
+```{r}
+source("./code/myrequirements.R")
+
+```
+
+
+## Data processing
+
+```{r}
+source("code/Process_Hs.R")
+load("lib/PPI_Network/net17Jan16.rda")
+
+```
+
+```{r}
+counts <- read.csv("./examples/GSE75748_Chu1.csv", header=TRUE) #Dataset:Chu1
+res0 <- Process_Hs(counts, net17Jan16.m)
+```
+
+```{r}
+str(res0)
+```
+
+
+ 
+## Calculation of DPOR
+
+```{r}
+
+source("./code/DoIntegPPI.R")
+source("./code/CompDPOR.R")
+load("./lib/hs_km.Rda")
+
+
+```
+
+```{r}
+res1 <- DoIntegPPI(res0[["exp"]], res0[["adj"]])
+str(res1)
+
+```
+
+
+```{r}
+exp <- res1[["expMC"]]
+adj <- res1[["adjMC"]]
+# Chu1_curve.csv" can be obtained by running CompORC.py
+curve <- read.csv("examples/Chu1_curve.csv", header=TRUE)
+
+rownames(curve) <- curve[,1]
+curve <- curve[,-1]
+
+
+```
+
+
+
+
+
+```
+
+```
+```{r}
+print(dim(curve))
+
+```
+
+```{r}
+score = CompDPOR(exp, curve, km)
+write.csv(score, "examples/out_Chu1_score.csv")
+
+```
+
+```{r}
+ print(range(score))
+```
+
+ print(range(score))
+## [1] 0.6504868 1.0000000
+ ```
+
+----
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
